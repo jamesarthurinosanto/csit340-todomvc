@@ -6,6 +6,7 @@ function Todos() {
 
   const activeCount = todos.filter((todo) => !todo.completed).length
   const hasCompleted = todos.some((todo) => todo.completed)
+  const allCompleted = todos.every((todo) => todo.completed)
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -41,6 +42,15 @@ function Todos() {
     setTodos(todos.filter((todo) => !todo.completed))
   }
 
+  function handleToggleAll() {
+    setTodos(
+      todos.map((todo) => ({
+        ...todo,
+        completed: !allCompleted,
+      }))
+    )
+  }
+
   return (
     <section className="mx-auto max-w-[550px]">
       <h1 className="text-center text-[80px] font-extralight text-[#b83f45]">
@@ -63,6 +73,8 @@ function Todos() {
               <input
                 id="toggle-all"
                 type="checkbox"
+                checked={allCompleted}
+                onChange={handleToggleAll}
                 className="peer sr-only"
               />
 
