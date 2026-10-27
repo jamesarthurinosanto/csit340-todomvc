@@ -18,12 +18,16 @@ function handleSubmit(e) {
     setText('')
     }
  
-  function handleToggle(id) {
+function handleToggle(id) {
      setTodos(
        todos.map((todo) =>
          todo.id === id ? { ...todo, completed: !todo.completed } : todo
        )
      )
+     }
+ 
+function handleDelete(id) {
+     setTodos(todos.filter((todo) => todo.id !== id))
   }
 
   return (
@@ -78,6 +82,7 @@ function handleSubmit(e) {
               </span>
               <button
                 type="button"
+                onClick={() => handleDelete(todo.id)}
                 className="absolute right-[10px] hidden size-10 cursor-pointer text-[30px] text-[#949494] group-hover:block hover:text-[#c18585]"
               >
                 ×
