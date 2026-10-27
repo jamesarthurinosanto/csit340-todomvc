@@ -2,10 +2,7 @@ import { useState } from 'react'
 
 function Todos() {
     const [text, setText] = useState('')
-    const [todos, setTodos] = useState([
-    { id: 1, text: 'Learn the spread operator', completed: false },
-    { id: 2, text: 'Set up Tailwind', completed: true },
-  ])
+    const [todos, setTodos] = useState([])
 
 function handleSubmit(e) {
     e.preventDefault()
@@ -45,6 +42,9 @@ function handleDelete(id) {
             placeholder="What needs to be done?"
           />
         </form>
+
+        {todos.length > 0 && (
+          <>
 
         <main className="relative border-t border-[#e6e6e6]">
           <input
@@ -131,6 +131,8 @@ function handleDelete(id) {
             Clear completed
           </button>
         </footer>
+        </>
+        )}
       </div>
     </section>
   )
