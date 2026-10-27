@@ -1,30 +1,39 @@
 import { useState } from 'react'
 
 function Todos() {
-    const [text, setText] = useState('')
-    const [todos, setTodos] = useState([])
+  const [text, setText] = useState('')
+  const [todos, setTodos] = useState([])
 
-function handleSubmit(e) {
+  const activeCount = todos.filter((todo) => !todo.completed).length
+
+  function handleSubmit(e) {
     e.preventDefault()
     const trimmed = text.trim()
+
     if (trimmed === '') {
       return
     }
-    const newTodo = { id: crypto.randomUUID(), text: trimmed, completed: false }
+
+    const newTodo = {
+      id: crypto.randomUUID(),
+      text: trimmed,
+      completed: false,
+    }
+
     setTodos([...todos, newTodo])
     setText('')
-    }
- 
-function handleToggle(id) {
-     setTodos(
-       todos.map((todo) =>
-         todo.id === id ? { ...todo, completed: !todo.completed } : todo
-       )
-     )
-     }
- 
-function handleDelete(id) {
-     setTodos(todos.filter((todo) => todo.id !== id))
+  }
+
+  function handleToggle(id) {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    )
+  }
+
+  function handleDelete(id) {
+    setTodos(todos.filter((todo) => todo.id !== id))
   }
 
   return (
@@ -45,93 +54,101 @@ function handleDelete(id) {
 
         {todos.length > 0 && (
           <>
-
-        <main className="relative border-t border-[#e6e6e6]">
-          <input
-            id="toggle-all"
-            type="checkbox"
-            className="peer sr-only"
-          />
-          <label
-            htmlFor="toggle-all"
-            className="absolute -top-[66px] left-0 flex h-[65px] w-[60px] cursor-pointer items-center justify-center text-[22px] text-[#949494] peer-checked:text-[#484848]"
-          >
-            <span className="rotate-90">❯</span>
-          </label>
-
-          <ul>
-                {todos.map((todo) => (
-               <li
-                 key={todo.id}
-                 className="group relative flex items-center border-b border-[#ededed] text-2xl"
-               >
+            <main className="relative border-t border-[#e6e6e6]">
               <input
+                id="toggle-all"
                 type="checkbox"
-                checked={todo.completed}
-                   onChange={() => handleToggle(todo.id)}
-                className="ml-[15px] size-[30px] shrink-0 cursor-pointer accent-[#59a193]"
+                className="peer sr-only"
               />
-              <span
-                   className={
-                     todo.completed
-                       ? 'flex-1 py-[15px] pr-[60px] pl-[15px] break-all text-[#949494] line-through'
-                       : 'flex-1 py-[15px] pr-[60px] pl-[15px] break-all'
-                   }
-                 >
-                   {todo.text}
+
+              <label
+                htmlFor="toggle-all"
+                className="absolute -top-[66px] left-0 flex h-[65px] w-[60px] cursor-pointer items-center justify-center text-[22px] text-[#949494] peer-checked:text-[#484848]"
+              >
+                <span className="rotate-90">❯</span>
+              </label>
+
+              <ul>
+                {todos.map((todo) => (
+                  <li
+                    key={todo.id}
+                    className="group relative flex items-center border-b border-[#ededed] text-2xl"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={todo.completed}
+                      onChange={() => handleToggle(todo.id)}
+                      className="ml-[15px] size-[30px] shrink-0 cursor-pointer accent-[#59a193]"
+                    />
+
+                    <span
+                      className={
+                        todo.completed
+                          ? 'flex-1 py-[15px] pr-[60px] pl-[15px] break-all text-[#949494] line-through'
+                          : 'flex-1 py-[15px] pr-[60px] pl-[15px] break-all'
+                      }
+                    >
+                      {todo.text}
+                    </span>
+
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(todo.id)}
+                      className="absolute right-[10px] hidden size-10 cursor-pointer text-[30px] text-[#949494] group-hover:block hover:text-[#c18585]"
+                    >
+                      ×
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </main>
+
+            <footer className="grid h-10 grid-cols-3 items-center border-t border-[#e6e6e6] px-[15px] text-[15px]">
+              <span>
+                <strong className="font-light">{activeCount}</strong>{' '}
+                {activeCount === 1 ? 'item' : 'items'} left
               </span>
-              <button
-                type="button"
-                onClick={() => handleDelete(todo.id)}
-                className="absolute right-[10px] hidden size-10 cursor-pointer text-[30px] text-[#949494] group-hover:block hover:text-[#c18585]"
-              >
-                ×
-              </button>
-            </li>
-            ))}
-          </ul>
-        </main>
 
-        <footer className="grid h-10 grid-cols-3 items-center border-t border-[#e6e6e6] px-[15px] text-[15px]">
-          <span>
-            <strong className="font-light">1</strong> item left
-          </span>
+              <ul className="flex justify-center gap-1">
+                <li>
+                  <button
+                    type="button"
+                    className="cursor-pointer rounded-[3px] border border-[#b83f45]/20 px-[7px] py-[3px]"
+                  >
+                    All
+                  </button>
+                </li>
 
-          <ul className="flex justify-center gap-1">
-            <li>
-              <button
-                type="button"
-                className="cursor-pointer rounded-[3px] border border-[#b83f45]/20 px-[7px] py-[3px]"
-              >
-                All
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                className="cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10"
-              >
-                Active
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                className="cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10"
-              >
-                Completed
-              </button>
-            </li>
-          </ul>
+                <li>
+                  <button
+                    type="button"
+                    className="cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10"
+                  >
+                    Active
+                  </button>
+                </li>
 
-          <button
-            type="button"
-            className="cursor-pointer justify-self-end hover:underline"
-          >
-            Clear completed
-          </button>
-        </footer>
-        </>
+                <li>
+                  <button
+                    type="button"
+                    className="cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10"
+                  >
+                    Completed
+                  </button>
+                </li>
+              </ul>
+
+              <button
+                type="button"
+                className="cursor-pointer justify-self-end hover:underline"
+              >
+                Clear completed
+              </button>
+            </footer>
+          </>
+
+
+//Added Part 2 a
         )}
       </div>
     </section>
